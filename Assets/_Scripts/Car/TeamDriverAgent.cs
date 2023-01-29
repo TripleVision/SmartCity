@@ -4,8 +4,9 @@ using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Sensors;
 using Random = UnityEngine.Random;
 using Assets._Scripts.Car;
+using MBaske.Sensors.Grid;
 
-public class MLDriverAgent : Agent, ICarAgent
+public class TeamDriverAgent : Agent, ICarAgent
 {
 	private CarPercepts _carPercepts;
 	private CarController _carController;
@@ -17,12 +18,15 @@ public class MLDriverAgent : Agent, ICarAgent
 	[SerializeField] private float _maxNegativeReward = -100f;
 
 	[Header("Debug")]
+	[SerializeField] private string _detectableBallTag;
 	[SerializeField] private float _accelerationOutput;
 	[SerializeField] private float _steeringOutput;
 	[SerializeField] private float _brakeOutput;
 
 	public PathCrawler PathCrawler => _pathCrawler;
+
     public int StartingPathIndex { get; set; }
+
 	public Transform Transform => transform;
 
     public void Start()
@@ -56,7 +60,6 @@ public class MLDriverAgent : Agent, ICarAgent
     {
 		_rigidBody.velocity = Vector3.zero;
 		_rigidBody.angularVelocity = Vector3.zero;
-		_rigidBody.ResetInertiaTensor();
 	}
 
 	private void Update()
@@ -77,7 +80,6 @@ public class MLDriverAgent : Agent, ICarAgent
 	public void SetPositionRewardingBall(Vector3 newPosition)
     {
 		_rewardingBall.transform.position = newPosition;
-
 	}
 
 	public override void CollectObservations(VectorSensor sensor)
@@ -113,7 +115,7 @@ public class MLDriverAgent : Agent, ICarAgent
 		{
 			if (tag == "Car" || tag == "TrafficSignal" || tag == "Sidewalk")
 			{
-				//Debug.Log("Collided with " + tag + "! Resetting...");
+				Debug.Log("Collided with " + tag + "! Resetting...");
 				AddReward(-1f);
 				EndEpisode();
 			}
@@ -121,7 +123,7 @@ public class MLDriverAgent : Agent, ICarAgent
 
         if (_carPercepts.TriggeredWithObjects(out string triggerTag, clear: true))
         {
-            if (triggerTag == "RewardingBall")
+            if (triggerTag == _rewardingBall.tag)
             {
                 //Debug.Log("Touched Rewarding Ball  <color=green>Got Reward</color>");
                 AddReward(0.1f);
@@ -156,5 +158,6 @@ public class MLDriverAgent : Agent, ICarAgent
     public void SetDetectableBallTag(string tag)
     {
 		_rewardingBall.tag = tag;
-    }
+		_detectableBallTag = tag;
+	}
 }

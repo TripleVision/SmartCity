@@ -323,14 +323,14 @@ GameObject:
   - component: {fileID: 3760449850941557032}
   - component: {fileID: 7585230952948934565}
   - component: {fileID: 7480390315168280108}
-  - component: {fileID: 6505915156697301846}
   - component: {fileID: 1759202748097450989}
   - component: {fileID: 2992256409597104887}
   - component: {fileID: 6676404705486320923}
   - component: {fileID: 7000505477174121814}
   - component: {fileID: 6000601999829363053}
+  - component: {fileID: 5430549948530565743}
   m_Layer: 0
-  m_Name: MLDriverAgent_GridSensor_DetectingCars
+  m_Name: TeamDriverAgent
   m_TagString: Car
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -520,27 +520,6 @@ MonoBehaviour:
   m_UseChildActuators: 1
   m_DeterministicInference: 0
   m_ObservableAttributeHandling: 0
---- !u!114 &6505915156697301846
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 934424138730658441}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 06573f922ca3477419344efba8864887, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  agentParameters:
-    maxStep: 0
-  hasUpgradedFromAgentParameters: 1
-  MaxStep: 5000
-  _rewardingBall: {fileID: 4500749928121453160}
-  _maxNegativeReward: -100
-  _accelerationOutput: 0
-  _steeringOutput: 0
-  _brakeOutput: 0
 --- !u!114 &1759202748097450989
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -683,7 +662,7 @@ MonoBehaviour:
       Enabled: 1
       Color: {r: 0, g: 0, b: 1, a: 1}
     m_DetectorSpaceType: 1
-  - Tag: RewardingBall
+  - Tag: Ball_0
     Enabled: 1
     DetectionType: 2
     Modifier: 2
@@ -714,6 +693,27 @@ MonoBehaviour:
     width: 360
     height: 66
   m_GridResolution: 1.0471976
+--- !u!114 &5430549948530565743
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 934424138730658441}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee7359d06dcd76141bcf0f459ec2476d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  agentParameters:
+    maxStep: 0
+  hasUpgradedFromAgentParameters: 1
+  MaxStep: 5000
+  _rewardingBall: {fileID: 4500749928121453160}
+  _maxNegativeReward: -100
+  _accelerationOutput: 0
+  _steeringOutput: 0
+  _brakeOutput: 0
 --- !u!1 &958415148322114821
 GameObject:
   m_ObjectHideFlags: 0

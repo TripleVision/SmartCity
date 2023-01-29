@@ -1,4 +1,6 @@
+using Assets._Scripts.Car;
 using PathCreation;
+using Unity.MLAgents;
 using UnityEngine;
 
 public class MLTrainingScene : MonoBehaviour
@@ -10,7 +12,9 @@ public class MLTrainingScene : MonoBehaviour
     [SerializeField] private float _offsetFromGround = 0.5f;
 
     private NodePath[] _nodePaths;
-    private MLDriverAgent[] _agents;
+    private Agent[] _agents;
+
+    SimpleMultiAgentGroup _agentsGroup;
 
     void Awake()
     {
@@ -19,7 +23,8 @@ public class MLTrainingScene : MonoBehaviour
     private void Init()
     {
         _nodePaths = _roadsParent.transform.GetComponentsInChildren<NodePath>();
-        _agents = GetComponentsInChildren<MLDriverAgent>();
+        _agents = GetComponentsInChildren<Agent>();
+        _agentsGroup = new SimpleMultiAgentGroup();
     }
 
     private void Start()
@@ -51,26 +56,38 @@ public class MLTrainingScene : MonoBehaviour
     //    ResetAgent(agent, startingPathIndex);
     //}
 
-    public void ResetAgent(MLDriverAgent agent, int startingPathIndex)
+    public void ResetAgent(Agent agent, int startingPathIndex)
     {
-        agent.StartingPathIndex = startingPathIndex;
+
+        var carAgent = agent as ICarAgent;
+        carAgent.StartingPathIndex = startingPathIndex;
 
         NodePath startingPath = _nodePaths[startingPathIndex];
         ResetAgentPosition(agent, startingPathIndex);
-        agent.ResetRigidBody();
-        agent.PathCrawler.Initialize(startingPath);
+        carAgent.ResetRigidBody();
+        carAgent.PathCrawler.Initialize(startingPath);
 
-        var nextNode = agent.PathCrawler.nextThreeNodes[1];
-        agent.SetPositionRewardingBall(new Vector3(nextNode.x, 5f, nextNode.y));
+        var nextNode = carAgent.PathCrawler.nextThreeNodes[1];
+        carAgent.SetPositionRewardingBall(new Vector3(nextNode.x, 5f, nextNode.y));
+        SetUpRewardBallTag(agent, startingPathIndex);
 
-        agent.PathCrawler.CheckChangedNodes(clear: true);
+        carAgent.PathCrawler.CheckChangedNodes(clear: true);
     }
 
-    private void ResetAgentPosition(MLDriverAgent agent, int startingPathIndex)
+    private static void SetUpRewardBallTag(Agent agent, int startingPathIndex)
     {
-        agent.transform.position = GetPosition(startingPathIndex);
-        agent.transform.position -= agent.transform.forward * _startPositionOffset;
-        agent.transform.rotation = GetRotation(startingPathIndex);
+        var carAgent = agent as ICarAgent;
+
+        carAgent.SetDetectableBallTag($"Ball_{startingPathIndex}");
+    }
+
+    private void ResetAgentPosition(Agent agent, int startingPathIndex)
+    {
+        var carAgent = agent as ICarAgent;
+
+        carAgent.Transform.position = GetPosition(startingPathIndex);
+        carAgent.Transform.position -= carAgent.Transform.forward * _startPositionOffset;
+        carAgent.Transform.rotation = GetRotation(startingPathIndex);
     }
 
     private Quaternion GetRotation (int pathIndex)
@@ -91,7 +108,9 @@ public class MLTrainingScene : MonoBehaviour
 
         for (int i = 0; i < _agents.Length; i++)
         {
-            ResetAgentPosition(_agents[i], i);
+            var agent = _agents[i];
+            ResetAgentPosition(agent, i);
+            SetUpRewardBallTag(agent, i);
         }
     }
 }

@@ -34,6 +34,13 @@ TagManager:
   - Street
   - TrafficSignal
   - RewardingBall
+  - DetectableCar
+  - Ball_1
+  - Ball_2
+  - Ball_3
+  - Ball_4
+  - Ball_5
+  - Ball_0
   layers:
   - Default
   - TransparentFX
