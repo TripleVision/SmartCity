@@ -3,107 +3,90 @@ using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Sensors;
 using Random = UnityEngine.Random;
-using System.Collections.Generic;
 
 public class MLDriverAgent : Agent
 {
-	CarPercepts carPercepts;
-	CarController carController;
-	PathCrawler pathCrawler;
-	MLTrainingScene scene;
+	private CarPercepts _carPercepts;
+	private CarController _carController;
+	private PathCrawler _pathCrawler;
+	private MLTrainingScene _scene;
+	private Rigidbody _rigidBody;
 
-	public float maxEpisodeTime = 15f;
-	public float maxNegativeReward = -100f;
-	public float accelerationOutput;
-	public float steeringOutput;
-	public float brakeOutput;
-	//private float _elapsedTime = 0f;
+	[SerializeField] private GameObject _rewardingBall;
+	[SerializeField] private float _maxNegativeReward = -100f;
 
-	public void Start()
+	[Header("Debug")]
+	[SerializeField] private float _accelerationOutput;
+	[SerializeField] private float _steeringOutput;
+	[SerializeField] private float _brakeOutput;
+
+	public PathCrawler PathCrawler => _pathCrawler;
+
+    public int StartingPathIndex { get; set; }
+
+    public void Start()
 	{
-		scene = transform.GetComponentInParent<MLTrainingScene>();
+		_scene = transform.GetComponentInParent<MLTrainingScene>();
 	}
 
 	public override void Initialize()
 	{
-		carPercepts = GetComponent<CarPercepts>();
-		carController = GetComponent<CarController>();
-		pathCrawler = GetComponent<PathCrawler>();
+		_carPercepts = GetComponent<CarPercepts>();
+		_carController = GetComponent<CarController>();
+		_pathCrawler = GetComponent<PathCrawler>();
+		_rigidBody = GetComponent<Rigidbody>();
+	}
+	
+	public override void OnEpisodeBegin()
+	{
+		_carController.velocity = 0;
+		_scene.ResetAgent(this, StartingPathIndex);
 	}
 
 	public void FixedUpdate()
 	{
-		//_elapsedTime += Time.fixedDeltaTime;
-		//if (_elapsedTime > maxEpisodeTime)
-		//{
-		//	EndEpisode();
-		//}
-
-		if (GetCumulativeReward() < maxNegativeReward)
+		if (GetCumulativeReward() < _maxNegativeReward)
 		{
 			EndEpisode();
 		}
 	}
 
+    internal void ResetRigidBody()
+    {
+		_rigidBody.velocity = Vector3.zero;
+		_rigidBody.angularVelocity = Vector3.zero;
+		_rigidBody.ResetInertiaTensor();
+	}
+
+	private void Update()
+    {
+		// Maybe it should be on collision detection moment?
+		if (_pathCrawler.CheckChangedNodes())
+		{
+			UpdateRewardballPosition();
+		}
+	}
+
+    private void UpdateRewardballPosition()
+	{
+		var newPosition = new Vector3(_pathCrawler.currentNodePosition.x, 0.2f, _pathCrawler.currentNodePosition.z);
+		SetPositionRewardingBall(newPosition);
+	}
+
+	public void SetPositionRewardingBall(Vector3 newPosition)
+    {
+		_rewardingBall.transform.position = newPosition;
+
+	}
+
 	public override void CollectObservations(VectorSensor sensor)
 	{
-		// 3 + 8 + 1 + 1 = 13
-
-		//SUM 6 Track self position and rotation velocity and direction
-		//sensor.AddObservation(transform.position.x);
-		//sensor.AddObservation(transform.position.z);
 		sensor.AddObservation(transform.rotation.y);
-		sensor.AddObservation(carController.velocity);
-		//sensor.AddObservation(transform.forward.x);
-		//sensor.AddObservation(transform.forward.z);
-
-
-		//SUM 2 observe direction to node
-		//sensor.AddObservation((pathCrawler.currentNodePosition - transform.position).magnitude);
-
-		//float angle = Vector3.SignedAngle(transform.forward, pathCrawler.currentNodePosition - transform.position,
-		//								 transform.up);
-		//sensor.AddObservation(angle/180f);
-		//Debug.Log(angle / 180f);
-
-		// 2 + 6  = 8 Track current node position, and subsequent three node's positions
-		//sensor.AddObservation(pathCrawler.currentNodePosition.x);
-		//sensor.AddObservation(pathCrawler.currentNodePosition.z);
-
-		//foreach (Vector3 node in pathCrawler.nextThreeNodes)
-		//{
-		//	sensor.AddObservation(node.x);
-		//	sensor.AddObservation(node.z);
-		//}
-
-		// Track status of approaching traffic signal, if applicable
-		// -1 -> None; 0 -> Red; 1 -> Yellow; 2 -> Green; 3 -> Stop Sign
-		//sensor.AddObservation(carPercepts.approachingTrafficSignalType);
-
-		// Track speed limit of current path
-		//sensor.AddObservation(pathCrawler.maxVelocity);
-
-        // Track status of raycast percepts coming from the front of the car
-        // By default, car casts 31 rays
-        // carPercepts.GetCollisions(out List<float> distances, "Car");
-        //foreach (float distance in distances)
-        //{
-        //    sensor.AddObservation(distance);
-        //}
-
+		sensor.AddObservation(_carController.velocity);
     }
 
 	public override void OnActionReceived(ActionBuffers actionBuffers)
 	{
-		//float verticalAxis = Mathf.Clamp(actionBuffers.ContinuousActions[0], -1f, 1f);
-		//float horizontalAxis = Mathf.Clamp(actionBuffers.ContinuousActions[1], -1f, 1f);
-		//float brakeValue = Mathf.Clamp(actionBuffers.ContinuousActions[2], 0f, 1f);
-
-		//Continues updated
-		//int verticalAxis = (int)actionBuffers.ContinuousActions[0];
-		//float horizontalAxis = actionBuffers.ContinuousActions[1];
-		//float brakeValue = 0; // actionBuffers.ContinuousActions[2]< 0.5f? 0f: 1f
-
 		//Continues & Discrete
 		var moveAction = actionBuffers.DiscreteActions[0];
 		int verticalAxis = (int)moveAction == 2 ? -1 : moveAction;
@@ -111,12 +94,12 @@ public class MLDriverAgent : Agent
 		float horizontalAxis = actionBuffers.ContinuousActions[0];
 		float brakeValue = 0; // actionBuffers.ContinuousActions[2]< 0.5f? 0f: 1f
 
-		accelerationOutput = verticalAxis;
-		steeringOutput = horizontalAxis;
-		brakeOutput = brakeValue;
+		_accelerationOutput = verticalAxis;
+		_steeringOutput = horizontalAxis;
+		_brakeOutput = brakeValue;
 
 		// Debug.Log("Vertical: " + verticalAxis + " Horizontal: " + horizontalAxis + " Brake: " + brakeValue);
-		carController.SetInput(verticalAxis, horizontalAxis, brakeValue);
+		_carController.SetInput(verticalAxis, horizontalAxis, brakeValue);
 
 		if (Vector3.Angle(transform.up, Vector3.up) > 45f)
 		{
@@ -125,7 +108,7 @@ public class MLDriverAgent : Agent
 			EndEpisode();
 		}
 
-		if (carPercepts.CollidedWithObject(out string tag, clear: true))
+		if (_carPercepts.CollidedWithObject(out string tag, clear: true))
 		{
 			if (tag == "Car" || tag == "TrafficSignal" || tag == "Sidewalk")
 			{
@@ -135,7 +118,7 @@ public class MLDriverAgent : Agent
 			}
 		}
 
-        if (carPercepts.TriggeredWithObjects(out string triggerTag, clear: true))
+        if (_carPercepts.TriggeredWithObjects(out string triggerTag, clear: true))
         {
             if (triggerTag == "RewardingBall")
             {
@@ -144,40 +127,13 @@ public class MLDriverAgent : Agent
             }
         }
 
-        //if (carRuleEnforcer.CheckRanTrafficSignal(clear: true))
-        //{
-        //	Debug.Log("Ran traffic signal");
-        //	AddReward(-0.5f);
-        //}
-        if (pathCrawler.IsInOtherLane())
+        if (_pathCrawler.IsInOtherLane())
 		{
 			// Debug.Log("Went into other lane");
 			AddReward(-1f);
 		}
-		//if (carController.velocity > pathCrawler.maxVelocity)
-		//{
-		//	// Debug.Log("Exceeded max velocity");
-		//	AddReward(-0.2f);
-		//}
-
-		// This is triggering when the level is reset, which I think is throwing off the rewards
-
-		//if (pathCrawler.CheckChangedNodes(clear: true))
-		//{
-		//	//Debug.Log("Changed nodes");
-		//	AddReward(1f);
-		//}
 
 		AddReward(-1f/MaxStep);
-	}
-
-	public override void OnEpisodeBegin()
-	{
-		//_elapsedTime = 0f;
-
-		carController.velocity = 0;
-
-		scene.InitializeScene(this);
 	}
 
 	public override void Heuristic(in ActionBuffers actionsOut)
@@ -194,8 +150,5 @@ public class MLDriverAgent : Agent
         {
 			discreteActionsOut[0] = 0;
 		}
-
-		//continuousActionsOut[1] = Input.GetAxis("Horizontal");
-		//continuousActionsOut[2] = Input.GetAxis("Jump");
 	}
 }
