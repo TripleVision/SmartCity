@@ -1,0 +1,65 @@
+{
+    "MLDriver": {
+        "checkpoints": [
+            {
+                "steps": 3499970,
+                "file_path": "results\\Run_13\\MLDriver\\MLDriver-3499970.onnx",
+                "reward": 7.1832640798468335,
+                "creation_time": 1674360489.609218,
+                "auxillary_file_paths": [
+                    "results\\Run_13\\MLDriver\\MLDriver-3499970.pt"
+                ]
+            },
+            {
+                "steps": 3999955,
+                "file_path": "results\\Run_13\\MLDriver\\MLDriver-3999955.onnx",
+                "reward": 8.46920096874237,
+                "creation_time": 1674361506.711421,
+                "auxillary_file_paths": [
+                    "results\\Run_13\\MLDriver\\MLDriver-3999955.pt"
+                ]
+            },
+            {
+                "steps": 4499967,
+                "file_path": "results\\Run_13\\MLDriver\\MLDriver-4499967.onnx",
+                "reward": 9.239685234270597,
+                "creation_time": 1674362525.32557,
+                "auxillary_file_paths": [
+                    "results\\Run_13\\MLDriver\\MLDriver-4499967.pt"
+                ]
+            },
+            {
+                "steps": 4999992,
+                "file_path": "results\\Run_13\\MLDriver\\MLDriver-4999992.onnx",
+                "reward": 5.5745011329650875,
+                "creation_time": 1674363557.3451202,
+                "auxillary_file_paths": [
+                    "results\\Run_13\\MLDriver\\MLDriver-4999992.pt"
+                ]
+            },
+            {
+                "steps": 5000033,
+                "file_path": "results\\Run_13\\MLDriver\\MLDriver-5000033.onnx",
+                "reward": 5.883692047812722,
+                "creation_time": 1674363557.4278986,
+                "auxillary_file_paths": [
+                    "results\\Run_13\\MLDriver\\MLDriver-5000033.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 5000033,
+            "file_path": "results\\Run_13\\MLDriver.onnx",
+            "reward": 5.883692047812722,
+            "creation_time": 1674363557.4278986,
+            "auxillary_file_paths": [
+                "results\\Run_13\\MLDriver\\MLDriver-5000033.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "0.29.0",
+        "torch_version": "1.13.1+cu117"
+    }
+}

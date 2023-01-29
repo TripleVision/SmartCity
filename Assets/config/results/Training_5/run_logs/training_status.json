@@ -1,0 +1,47 @@
+{
+    "MLDriver": {
+        "checkpoints": [
+            {
+                "steps": 499984,
+                "file_path": "results\\Training_5\\MLDriver\\MLDriver-499984.onnx",
+                "reward": 24.906401574611664,
+                "creation_time": 1674427240.001025,
+                "auxillary_file_paths": [
+                    "results\\Training_5\\MLDriver\\MLDriver-499984.pt"
+                ]
+            },
+            {
+                "steps": 999907,
+                "file_path": "results\\Training_5\\MLDriver\\MLDriver-999907.onnx",
+                "reward": 17.21470081806183,
+                "creation_time": 1674428918.9101696,
+                "auxillary_file_paths": [
+                    "results\\Training_5\\MLDriver\\MLDriver-999907.pt"
+                ]
+            },
+            {
+                "steps": 1264671,
+                "file_path": "results\\Training_5\\MLDriver\\MLDriver-1264671.onnx",
+                "reward": 29.477512942420113,
+                "creation_time": 1674429830.3921566,
+                "auxillary_file_paths": [
+                    "results\\Training_5\\MLDriver\\MLDriver-1264671.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 1264671,
+            "file_path": "results\\Training_5\\MLDriver.onnx",
+            "reward": 29.477512942420113,
+            "creation_time": 1674429830.3921566,
+            "auxillary_file_paths": [
+                "results\\Training_5\\MLDriver\\MLDriver-1264671.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "0.29.0",
+        "torch_version": "1.13.1+cu117"
+    }
+}

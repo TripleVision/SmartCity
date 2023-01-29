@@ -1,0 +1,65 @@
+{
+    "MLDriver": {
+        "checkpoints": [
+            {
+                "steps": 2999977,
+                "file_path": "results\\Training_3\\MLDriver\\MLDriver-2999977.onnx",
+                "reward": 14.016627566019695,
+                "creation_time": 1674411055.5916033,
+                "auxillary_file_paths": [
+                    "results\\Training_3\\MLDriver\\MLDriver-2999977.pt"
+                ]
+            },
+            {
+                "steps": 3499916,
+                "file_path": "results\\Training_3\\MLDriver\\MLDriver-3499916.onnx",
+                "reward": 35.09130197763443,
+                "creation_time": 1674412893.355704,
+                "auxillary_file_paths": [
+                    "results\\Training_3\\MLDriver\\MLDriver-3499916.pt"
+                ]
+            },
+            {
+                "steps": 3505868,
+                "file_path": "results\\Training_3\\MLDriver\\MLDriver-3505868.onnx",
+                "reward": 25.746680855751038,
+                "creation_time": 1674412980.5541952,
+                "auxillary_file_paths": [
+                    "results\\Training_3\\MLDriver\\MLDriver-3505868.pt"
+                ]
+            },
+            {
+                "steps": 3509761,
+                "file_path": "results\\Training_3\\MLDriver\\MLDriver-3509761.onnx",
+                "reward": null,
+                "creation_time": 1674413129.5926294,
+                "auxillary_file_paths": [
+                    "results\\Training_3\\MLDriver\\MLDriver-3509761.pt"
+                ]
+            },
+            {
+                "steps": 3664957,
+                "file_path": "results\\Training_3\\MLDriver\\MLDriver-3664957.onnx",
+                "reward": 39.15120351314545,
+                "creation_time": 1674416479.9550798,
+                "auxillary_file_paths": [
+                    "results\\Training_3\\MLDriver\\MLDriver-3664957.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 3664957,
+            "file_path": "results\\Training_3\\MLDriver.onnx",
+            "reward": 39.15120351314545,
+            "creation_time": 1674416479.9550798,
+            "auxillary_file_paths": [
+                "results\\Training_3\\MLDriver\\MLDriver-3664957.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "0.29.0",
+        "torch_version": "1.13.1+cu117"
+    }
+}
