@@ -2343,7 +2343,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a15f986e748490149879c4064b27952c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ObservationShape: 0 channels x 120 width x 22 height
+  m_ObservationShape: 1 channel x 120 width x 22 height
   m_SensorName: GridSensor
   m_ObservationStacks: 4
   m_CompressionType: 1
@@ -2360,13 +2360,27 @@ MonoBehaviour:
     IsEnabled: 0
     IsStandby: 0
   m_GridShape:
-    NumChannels: 0
+    NumChannels: 1
     Width: 120
     Height: 22
   m_ClearCacheOnReset: 0
   m_ColliderBufferSize: 256
   m_TmpObjectToAdd: {fileID: 0}
-  m_GameObjectSettingsList: []
+  m_GameObjectSettingsList:
+  - Tag: RewardingBall
+    Enabled: 1
+    DetectionType: 2
+    Modifier: 2
+    Detectable: {fileID: 5042741714474012998}
+    m_UserObservables:
+      m_Observables: []
+    m_Observables:
+    - Name: Distance
+      Type: 0
+      Index: -1
+      Enabled: 1
+      Color: {r: 0, g: 1, b: 0, a: 1}
+    m_DetectorSpaceType: 1
   m_SensorResolution: 1.05 meters (3.00 deg at 20.00 meters)
   m_CellArc: 3
   m_LatAngleNorth: 40
@@ -3376,6 +3390,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5379736214475266054, guid: 09319299fc722c04a9181c19055280b4, type: 3}
   m_PrefabInstance: {fileID: 6577679768798605179}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &5042741714474012998 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2212382568668937789, guid: 09319299fc722c04a9181c19055280b4, type: 3}
+  m_PrefabInstance: {fileID: 6577679768798605179}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8954248571596930612}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f06e7c5ae2f9934e93db866ce90ef93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8954248571596930612 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2813480123453854031, guid: 09319299fc722c04a9181c19055280b4, type: 3}
