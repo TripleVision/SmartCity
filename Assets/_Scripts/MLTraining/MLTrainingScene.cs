@@ -7,6 +7,7 @@ public class MLTrainingScene : MonoBehaviour
     [SerializeField] private GameObject _agentPrefab;
     //[SerializeField] private int agentsCount = 5;
     [SerializeField] private float _startPositionOffset = 0.5f;
+    [SerializeField] private float _offsetFromGround = 0.5f;
 
     private NodePath[] _nodePaths;
     private MLDriverAgent[] _agents;
@@ -80,7 +81,7 @@ public class MLTrainingScene : MonoBehaviour
 
     private Vector3 GetPosition(int pathIndex)
     {
-        return _nodePaths[pathIndex].nodes[0];
+        return _nodePaths[pathIndex].nodes[0] + Vector3.up * _offsetFromGround;
     }
 
     [ContextMenu("Reset Agents")]
