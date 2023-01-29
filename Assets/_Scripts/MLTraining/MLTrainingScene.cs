@@ -1,59 +1,68 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class MLTrainingScene : MonoBehaviour
 {
-
-    public GameObject roadsParent;
-    public GameObject driverAgentPrefab;
-    public GameObject rewardingBall;
+    [SerializeField] private GameObject _roadsParent;
+    [SerializeField] private GameObject _agentPrefab;
+    [SerializeField] private int agentsCount = 5;
+    [SerializeField] private float _startPositionOffset = 0.5f;
 
     private NodePath[] _nodePaths;
-    private MLDriverAgent _driverAgent;
-    private PathCrawler _pathCrawler;
-    public int startingPathIndex = 0;
+    private MLDriverAgent[] _agents;
 
-    // Start is called before the first frame update
     void Start()
     {
-        _nodePaths = roadsParent.transform.GetComponentsInChildren<NodePath>();
+        _nodePaths = _roadsParent.transform.GetComponentsInChildren<NodePath>();
+        //_agents = GetComponentsInChildren<MLDriverAgent>();
+        InitializeScene();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void InitializeScene()
     {
-        //UpdateRewardballPosition();
-
-        if (_pathCrawler.CheckChangedNodes())
+        for (int i = 0; i < agentsCount; i++)
         {
-            UpdateRewardballPosition();
+            var startingPathIndex = i;
+            SpawnAgent(startingPathIndex);
         }
     }
 
-    public void InitializeScene(MLDriverAgent agent)
+    private void SpawnAgent(int startingPathIndex)
     {
-        NodePath startingPath = _nodePaths[startingPathIndex]; // _nodePaths[Random.Range(0, _nodePaths.Length)];
-        Quaternion startingRot = Quaternion.LookRotation(startingPath.nodes[1] - startingPath.nodes[0]);
-        _pathCrawler = agent.GetComponent<PathCrawler>();
-
-        agent.transform.position = startingPath.nodes[0];
-        agent.transform.position += agent.transform.forward * -0.5f;
-        agent.transform.rotation = startingRot;
-        agent.transform.parent = transform;
-        agent.GetComponent<Rigidbody>().velocity = Vector3.zero;
-
-        _pathCrawler.Initialize(startingPath);
-        var nextNode = _pathCrawler.nextThreeNodes[1];
-
-        rewardingBall.transform.position = new Vector3(nextNode.x, 5f, nextNode.y);
-        _pathCrawler.CheckChangedNodes(clear: true);
-        //UpdateRewardballPosition();
-        _driverAgent = agent;
+        var agentClone = Instantiate(_agentPrefab, GetPosition(startingPathIndex), GetRotation(startingPathIndex), transform);
+        MLDriverAgent agent = agentClone.GetComponent<MLDriverAgent>();
+        ResetAgent(agent, startingPathIndex);
     }
 
-    private void UpdateRewardballPosition()
+    public void ResetAgent(MLDriverAgent agent, int startingPathIndex)
     {
-        rewardingBall.transform.position = new Vector3(_pathCrawler.currentNodePosition.x, 0.2f, _pathCrawler.currentNodePosition.z);
+        agent.StartingPathIndex = startingPathIndex;
+
+        NodePath startingPath = _nodePaths[startingPathIndex];
+
+        agent.transform.position = GetPosition(startingPathIndex);
+        agent.transform.position -= agent.transform.forward * _startPositionOffset;
+        agent.transform.rotation = GetRotation(startingPathIndex);
+        agent.ResetRigidBody();
+
+        agent.PathCrawler.Initialize(startingPath);
+
+        var nextNode = agent.PathCrawler.nextThreeNodes[1];
+        agent.SetPositionRewardingBall(new Vector3(nextNode.x, 5f, nextNode.y));
+
+        agent.PathCrawler.CheckChangedNodes(clear: true);
     }
+
+    private Quaternion GetRotation (int pathIndex)
+    {
+        NodePath path = _nodePaths[pathIndex];
+        return Quaternion.LookRotation(path.nodes[1] - path.nodes[0]);
+    }
+
+    private Vector3 GetPosition(int pathIndex)
+    {
+        NodePath path = _nodePaths[pathIndex];
+        return path.nodes[0];
+    }
+
+
 }
