@@ -12,7 +12,7 @@ public class NodePath : MonoBehaviour
     private Vector3[] _nodes = null;
     public Vector3[] nodes {
         get {
-            if (_nodes == null) {
+            if (_nodes == null || _nodes.Length == 0) {
                 _nodes = GetPathNodes(path);
             }
             return _nodes;
