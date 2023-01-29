@@ -1,55 +1,75 @@
+using PathCreation;
 using UnityEngine;
 
 public class MLTrainingScene : MonoBehaviour
 {
     [SerializeField] private GameObject _roadsParent;
     [SerializeField] private GameObject _agentPrefab;
-    [SerializeField] private int agentsCount = 5;
+    //[SerializeField] private int agentsCount = 5;
     [SerializeField] private float _startPositionOffset = 0.5f;
 
     private NodePath[] _nodePaths;
     private MLDriverAgent[] _agents;
 
-    void Start()
+    void Awake()
+    {
+        Init();
+    }
+    private void Init()
     {
         _nodePaths = _roadsParent.transform.GetComponentsInChildren<NodePath>();
-        //_agents = GetComponentsInChildren<MLDriverAgent>();
-        InitializeScene();
+        _agents = GetComponentsInChildren<MLDriverAgent>();
     }
 
-    public void InitializeScene()
+    private void Start()
     {
-        for (int i = 0; i < agentsCount; i++)
+        SetupAgents();
+    }
+
+    public void SetupAgents()
+    {
+        for (int i = 0; i < _agents.Length; i++)
         {
-            var startingPathIndex = i;
-            SpawnAgent(startingPathIndex);
+            ResetAgent(_agents[i], i);
         }
     }
 
-    private void SpawnAgent(int startingPathIndex)
-    {
-        var agentClone = Instantiate(_agentPrefab, GetPosition(startingPathIndex), GetRotation(startingPathIndex), transform);
-        MLDriverAgent agent = agentClone.GetComponent<MLDriverAgent>();
-        ResetAgent(agent, startingPathIndex);
-    }
+    //public void SpawnAgents()
+    //{
+    //    for (int i = 0; i < agentsCount; i++)
+    //    {
+    //        var startingPathIndex = i;
+    //        SpawnAgent(startingPathIndex);
+    //    }
+    //}
+
+    //private void SpawnAgent(int startingPathIndex)
+    //{
+    //    var agentClone = Instantiate(_agentPrefab, GetPosition(startingPathIndex), GetRotation(startingPathIndex), transform);
+    //    MLDriverAgent agent = agentClone.GetComponent<MLDriverAgent>();
+    //    ResetAgent(agent, startingPathIndex);
+    //}
 
     public void ResetAgent(MLDriverAgent agent, int startingPathIndex)
     {
         agent.StartingPathIndex = startingPathIndex;
 
         NodePath startingPath = _nodePaths[startingPathIndex];
-
-        agent.transform.position = GetPosition(startingPathIndex);
-        agent.transform.position -= agent.transform.forward * _startPositionOffset;
-        agent.transform.rotation = GetRotation(startingPathIndex);
+        ResetAgentPosition(agent, startingPathIndex);
         agent.ResetRigidBody();
-
         agent.PathCrawler.Initialize(startingPath);
 
         var nextNode = agent.PathCrawler.nextThreeNodes[1];
         agent.SetPositionRewardingBall(new Vector3(nextNode.x, 5f, nextNode.y));
 
         agent.PathCrawler.CheckChangedNodes(clear: true);
+    }
+
+    private void ResetAgentPosition(MLDriverAgent agent, int startingPathIndex)
+    {
+        agent.transform.position = GetPosition(startingPathIndex);
+        agent.transform.position -= agent.transform.forward * _startPositionOffset;
+        agent.transform.rotation = GetRotation(startingPathIndex);
     }
 
     private Quaternion GetRotation (int pathIndex)
@@ -60,9 +80,17 @@ public class MLTrainingScene : MonoBehaviour
 
     private Vector3 GetPosition(int pathIndex)
     {
-        NodePath path = _nodePaths[pathIndex];
-        return path.nodes[0];
+        return _nodePaths[pathIndex].nodes[0];
     }
 
+    [ContextMenu("Reset Agents")]
+    public void ResetAgents()
+    {
+        Init();
 
+        for (int i = 0; i < _agents.Length; i++)
+        {
+            ResetAgentPosition(_agents[i], i);
+        }
+    }
 }
