@@ -41,6 +41,11 @@ TagManager:
   - Ball_4
   - Ball_5
   - Ball_0
+  - Ball_6
+  - Ball_7
+  - Ball_8
+  - Ball_9
+  - Ball_10
   layers:
   - Default
   - TransparentFX

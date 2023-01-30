@@ -144,7 +144,7 @@ public class TeamDriverAgent : Agent, ICarAgent
         {
             if (triggerTag == _rewardingBall.tag)
             {
-                Debug.Log("Touched Rewarding Ball  <color=green>Got Reward</color>");
+                //Debug.Log("Touched Rewarding Ball  <color=green>Got Reward</color>");
                 AddReward(0.2f);
 				Academy.Instance.StatsRecorder.Add($"{SmartCity}/Grabbing Ball", 1, StatAggregationMethod.Sum);
 			}
