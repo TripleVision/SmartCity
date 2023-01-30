@@ -1,5 +1,6 @@
 using Assets._Scripts.Car;
 using PathCreation;
+using System;
 using Unity.MLAgents;
 using UnityEngine;
 
@@ -70,8 +71,16 @@ public class MLTrainingScene : MonoBehaviour
         var nextNode = carAgent.PathCrawler.nextThreeNodes[1];
         carAgent.SetPositionRewardingBall(new Vector3(nextNode.x, 5f, nextNode.y));
         SetUpRewardBallTag(agent, startingPathIndex);
+        SetBallParent(agent, transform);
 
         carAgent.PathCrawler.CheckChangedNodes(clear: true);
+    }
+
+    private void SetBallParent(Agent agent, Transform transform)
+    {
+        var carAgent = agent as ICarAgent;
+
+        carAgent.RewardingBall.transform.parent = transform;
     }
 
     private static void SetUpRewardBallTag(Agent agent, int startingPathIndex)
