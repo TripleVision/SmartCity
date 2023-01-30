@@ -25,6 +25,8 @@ public class MLDriverAgent : Agent, ICarAgent
     public int StartingPathIndex { get; set; }
 	public Transform Transform => transform;
 
+	public GameObject RewardingBall => _rewardingBall;
+
     public void Start()
 	{
 		_scene = transform.GetComponentInParent<MLTrainingScene>();

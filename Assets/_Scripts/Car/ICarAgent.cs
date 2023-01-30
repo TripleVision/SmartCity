@@ -6,6 +6,7 @@ namespace Assets._Scripts.Car
 {
     public interface ICarAgent
     {
+        public GameObject RewardingBall { get; }
         public Transform Transform { get; }
         public int StartingPathIndex { get; set; }
         public PathCrawler PathCrawler { get;  }

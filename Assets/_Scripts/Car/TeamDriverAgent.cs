@@ -2,9 +2,7 @@ using UnityEngine;
 using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Sensors;
-using Random = UnityEngine.Random;
 using Assets._Scripts.Car;
-using MBaske.Sensors.Grid;
 
 public class TeamDriverAgent : Agent, ICarAgent
 {
@@ -16,6 +14,7 @@ public class TeamDriverAgent : Agent, ICarAgent
 
 	[SerializeField] private GameObject _rewardingBall;
 	[SerializeField] private float _maxNegativeReward = -100f;
+	[SerializeField] private bool _countCummulativereward = false;
 
 	[Header("Debug")]
 	[SerializeField] private string _detectableBallTag;
@@ -28,6 +27,10 @@ public class TeamDriverAgent : Agent, ICarAgent
     public int StartingPathIndex { get; set; }
 
 	public Transform Transform => transform;
+
+	public GameObject RewardingBall => _rewardingBall;
+
+	private const string SmartCity = "Smart City";
 
     public void Start()
 	{
@@ -69,6 +72,9 @@ public class TeamDriverAgent : Agent, ICarAgent
 		{
 			UpdateRewardballPosition();
 		}
+
+		if (_countCummulativereward)
+			Globals.CummulativeReward = GetCumulativeReward();
 	}
 
     private void UpdateRewardballPosition()
@@ -86,6 +92,7 @@ public class TeamDriverAgent : Agent, ICarAgent
 	{
 		sensor.AddObservation(transform.rotation.y);
 		sensor.AddObservation(_carController.velocity);
+		sensor.AddObservation(PathCrawler.currentSideDist);
     }
 
 	public override void OnActionReceived(ActionBuffers actionBuffers)
@@ -109,15 +116,27 @@ public class TeamDriverAgent : Agent, ICarAgent
 			Debug.Log("Car is upside down");
 			AddReward(-1f);
 			EndEpisode();
+			Academy.Instance.StatsRecorder.Add($"{SmartCity}/Car Upside Down cases", 1, StatAggregationMethod.Sum);
+
 		}
 
 		if (_carPercepts.CollidedWithObject(out string tag, clear: true))
 		{
-			if (tag == "Car" || tag == "TrafficSignal" || tag == "Sidewalk")
+			if (tag == "Sidewalk")
 			{
 				Debug.Log("Collided with " + tag + "! Resetting...");
 				AddReward(-1f);
 				EndEpisode();
+				Academy.Instance.StatsRecorder.Add($"{SmartCity}/Sidewalk Collisions", 1, StatAggregationMethod.Sum);
+
+			}
+
+			if (tag == "Car")
+            {
+				Debug.Log("Collided with <color=red> Car </color>");
+				AddReward(-10);
+				EndEpisode();
+				Academy.Instance.StatsRecorder.Add($"{SmartCity}/Car Accidents", 1, StatAggregationMethod.Sum);
 			}
 		}
 
@@ -125,15 +144,18 @@ public class TeamDriverAgent : Agent, ICarAgent
         {
             if (triggerTag == _rewardingBall.tag)
             {
-                //Debug.Log("Touched Rewarding Ball  <color=green>Got Reward</color>");
-                AddReward(0.1f);
-            }
-        }
+                Debug.Log("Touched Rewarding Ball  <color=green>Got Reward</color>");
+                AddReward(0.2f);
+				Academy.Instance.StatsRecorder.Add($"{SmartCity}/Grabbing Ball", 1, StatAggregationMethod.Sum);
+			}
+		}
 
         if (_pathCrawler.IsInOtherLane())
 		{
 			// Debug.Log("Went into other lane");
-			AddReward(-1f);
+			AddReward(-0.1f);
+			Academy.Instance.StatsRecorder.Add($"{SmartCity}/Out of Line Cases", 1, StatAggregationMethod.Sum);
+
 		}
 
 		AddReward(-1f/MaxStep);
