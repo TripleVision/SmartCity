@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using MBaske.Sensors.Grid;
 using System.Collections;
 using System.Collections.Generic;
@@ -32,3 +33,4 @@ public class SideWalkScanner : MonoBehaviour
         AssetDatabase.Refresh();
     }
 }
+#endif

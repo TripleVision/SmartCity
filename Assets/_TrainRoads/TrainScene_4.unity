@@ -1653,8 +1653,8 @@ Camera:
   near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
-  orthographic: 0
-  orthographic size: 5
+  orthographic: 1
+  orthographic size: 6.9099803
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -1677,8 +1677,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1792659157}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalRotation: {x: 0.25323212, y: 0.2808304, z: -0.077086926, w: 0.9225321}
+  m_LocalPosition: {x: -4.2861624, y: 10.296602, z: -15.162847}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2235,7 +2235,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &2007078322
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2379,7 +2379,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3670513941053107127, guid: 2b14c389b938f8b40bdc74da3b25f0d3, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3742930119387847072, guid: 2b14c389b938f8b40bdc74da3b25f0d3, type: 3}
       propertyPath: m_GameObjectSettingsList.Array.data[1].Tag
@@ -2387,7 +2387,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3884082700537599661, guid: 2b14c389b938f8b40bdc74da3b25f0d3, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4242682998576654719, guid: 2b14c389b938f8b40bdc74da3b25f0d3, type: 3}
       propertyPath: m_GameObjectSettingsList.Array.data[1].Tag
@@ -2395,7 +2395,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4314675298201230184, guid: 2b14c389b938f8b40bdc74da3b25f0d3, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4464837363454858341, guid: 2b14c389b938f8b40bdc74da3b25f0d3, type: 3}
       propertyPath: m_GameObjectSettingsList.Array.data[1].Tag
@@ -2403,55 +2403,55 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7000513551386601472, guid: 2b14c389b938f8b40bdc74da3b25f0d3, type: 3}
       propertyPath: m_BehaviorType
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8116342906506899947, guid: 2b14c389b938f8b40bdc74da3b25f0d3, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.62581414
+      value: 0.62740564
       objectReference: {fileID: 0}
     - target: {fileID: 8116342906563550644, guid: 2b14c389b938f8b40bdc74da3b25f0d3, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.62597364
+      value: -0.6275651
       objectReference: {fileID: 0}
     - target: {fileID: 8116342906601211637, guid: 2b14c389b938f8b40bdc74da3b25f0d3, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.97631276
+      value: 0.99063617
       objectReference: {fileID: 0}
     - target: {fileID: 8116342907059070688, guid: 2b14c389b938f8b40bdc74da3b25f0d3, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.6322698
+      value: -0.63425916
       objectReference: {fileID: 0}
     - target: {fileID: 8116342907357427241, guid: 2b14c389b938f8b40bdc74da3b25f0d3, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.7451953
+      value: -0.75414747
       objectReference: {fileID: 0}
     - target: {fileID: 8116342907538806155, guid: 2b14c389b938f8b40bdc74da3b25f0d3, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.62581414
+      value: -0.62740564
       objectReference: {fileID: 0}
     - target: {fileID: 8116342907712246551, guid: 2b14c389b938f8b40bdc74da3b25f0d3, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.97071314
+      value: 0.98503655
       objectReference: {fileID: 0}
     - target: {fileID: 8116342907754522088, guid: 2b14c389b938f8b40bdc74da3b25f0d3, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.71615726
+      value: -0.723319
       objectReference: {fileID: 0}
     - target: {fileID: 8116342907810850848, guid: 2b14c389b938f8b40bdc74da3b25f0d3, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.7168809
+      value: 0.7240426
       objectReference: {fileID: 0}
     - target: {fileID: 8116342907875858796, guid: 2b14c389b938f8b40bdc74da3b25f0d3, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.63226694
+      value: 0.6342563
       objectReference: {fileID: 0}
     - target: {fileID: 8116342908322813385, guid: 2b14c389b938f8b40bdc74da3b25f0d3, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.62597364
+      value: 0.6275651
       objectReference: {fileID: 0}
     - target: {fileID: 8151753647353555265, guid: 2b14c389b938f8b40bdc74da3b25f0d3, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8732929990034074505, guid: 2b14c389b938f8b40bdc74da3b25f0d3, type: 3}
       propertyPath: m_GameObjectSettingsList.Array.data[1].Tag
